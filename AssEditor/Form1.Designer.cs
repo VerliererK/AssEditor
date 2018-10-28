@@ -40,8 +40,9 @@
             this.comboBox_fontName = new System.Windows.Forms.ComboBox();
             this.comboBox_sc2tc = new System.Windows.Forms.ComboBox();
             this.numericUpDown_fontScale = new System.Windows.Forms.NumericUpDown();
-            this.btn_openFiles = new System.Windows.Forms.Button();
             this.panel_editor = new System.Windows.Forms.Panel();
+            this.btn_renameForm = new System.Windows.Forms.Button();
+            this.btn_openFiles = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_wrap)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_fontScale)).BeginInit();
@@ -215,6 +216,33 @@
             0,
             0});
             // 
+            // panel_editor
+            // 
+            this.panel_editor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel_editor.AutoScroll = true;
+            this.panel_editor.BackColor = System.Drawing.SystemColors.Control;
+            this.panel_editor.Location = new System.Drawing.Point(0, 260);
+            this.panel_editor.Name = "panel_editor";
+            this.panel_editor.Padding = new System.Windows.Forms.Padding(10);
+            this.panel_editor.Size = new System.Drawing.Size(782, 398);
+            this.panel_editor.TabIndex = 4;
+            // 
+            // btn_renameForm
+            // 
+            this.btn_renameForm.BackColor = System.Drawing.Color.Transparent;
+            this.btn_renameForm.BackgroundImage = global::AssEditor.Properties.Resources.icons8_rename_100;
+            this.btn_renameForm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btn_renameForm.FlatAppearance.BorderSize = 0;
+            this.btn_renameForm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_renameForm.Location = new System.Drawing.Point(13, 206);
+            this.btn_renameForm.Name = "btn_renameForm";
+            this.btn_renameForm.Size = new System.Drawing.Size(40, 40);
+            this.btn_renameForm.TabIndex = 5;
+            this.btn_renameForm.UseVisualStyleBackColor = false;
+            this.btn_renameForm.Click += new System.EventHandler(this.btn_renameForm_Click);
+            // 
             // btn_openFiles
             // 
             this.btn_openFiles.BackColor = System.Drawing.Color.Transparent;
@@ -231,25 +259,13 @@
             this.btn_openFiles.UseVisualStyleBackColor = false;
             this.btn_openFiles.Click += new System.EventHandler(this.btn_openFiles_Click);
             // 
-            // panel_editor
-            // 
-            this.panel_editor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel_editor.AutoScroll = true;
-            this.panel_editor.BackColor = System.Drawing.SystemColors.Control;
-            this.panel_editor.Location = new System.Drawing.Point(0, 260);
-            this.panel_editor.Name = "panel_editor";
-            this.panel_editor.Padding = new System.Windows.Forms.Padding(10);
-            this.panel_editor.Size = new System.Drawing.Size(782, 398);
-            this.panel_editor.TabIndex = 4;
-            // 
             // Form1
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(782, 670);
+            this.Controls.Add(this.btn_renameForm);
             this.Controls.Add(this.panel_editor);
             this.Controls.Add(this.btn_openFiles);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -284,6 +300,7 @@
         private System.Windows.Forms.ComboBox comboBox_sc2tc;
         private System.Windows.Forms.NumericUpDown numericUpDown_fontScale;
         private System.Windows.Forms.Panel panel_editor;
+        private System.Windows.Forms.Button btn_renameForm;
     }
 }
 

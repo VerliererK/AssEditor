@@ -104,6 +104,11 @@ namespace AssEditor
             LoadSubtitles(FileNames);
         }
 
+        private void btn_renameForm_Click(object sender, EventArgs e)
+        {
+            new RenameForm().Show();
+        }
+
         private void btn_openFiles_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
