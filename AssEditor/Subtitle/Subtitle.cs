@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AssEditor.Subtitle
 {
@@ -14,31 +15,34 @@ namespace AssEditor.Subtitle
         private List<object> AllLines;
         public int DialogueTooLongCount { get { return Dialogues.Where(d => d.IsTextTooLong).Count(); } }
 
-        public static Subtitle LoadFromFile(string fileName, ushort wrapLimit = 20)
+        public static async Task<Subtitle> LoadFromFile(string fileName, ushort wrapLimit = 20, bool ToTraditional = false, ZhConvert.ZhConverter.Method method = ZhConvert.ZhConverter.Method.Fanhuaji)
         {
             if (!File.Exists(fileName)) return null;
             Subtitle subtitle = new Subtitle();
             subtitle.FileName = fileName;
             subtitle.encoding = EncodingHelper.GetEncoding(fileName);
-            string[] lines = File.ReadAllLines(fileName, subtitle.encoding);
-            foreach (var line in lines)
-            {
-                var d = Dialogue.Parse(line, wrapLimit);
-                var s = Style.Parse(line);
+            string allText = (!ToTraditional) ? File.ReadAllText(fileName, subtitle.encoding) :
+                await ZhConvert.ZhConverter.ToTraditional(File.ReadAllText(fileName), method);
+            string line;
+            using (var sr = new StringReader(allText))
+                while ((line = sr.ReadLine()) != null)
+                {
+                    var d = Dialogue.Parse(line, wrapLimit);
+                    var s = Style.Parse(line);
 
-                if (d != null)
-                {
-                    subtitle.AllLines.Add(d);
-                    subtitle.Dialogues.Add(d);
+                    if (d != null)
+                    {
+                        subtitle.AllLines.Add(d);
+                        subtitle.Dialogues.Add(d);
+                    }
+                    else if (s != null)
+                    {
+                        subtitle.AllLines.Add(s);
+                        subtitle.Styles.Add(s);
+                    }
+                    else
+                        subtitle.AllLines.Add(line);
                 }
-                else if (s != null)
-                {
-                    subtitle.AllLines.Add(s);
-                    subtitle.Styles.Add(s);
-                }
-                else
-                    subtitle.AllLines.Add(line);
-            }
             return subtitle;
         }
 

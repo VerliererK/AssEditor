@@ -101,7 +101,7 @@ namespace AssEditor
         private void Form1_DragDrop(object sender, DragEventArgs e)
         {
             string[] FileNames = (string[])e.Data.GetData(DataFormats.FileDrop);
-            LoadSubtitles(FileNames);
+            LoadSubtitlesAsync(FileNames);
         }
 
         private void btn_renameForm_Click(object sender, EventArgs e)
@@ -117,7 +117,7 @@ namespace AssEditor
                 openFileDialog.Filter = "Ass Files|*.ass;*.ssa";
                 openFileDialog.Title = "Select a Ass File";
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
-                    LoadSubtitles(openFileDialog.FileNames);
+                    LoadSubtitlesAsync(openFileDialog.FileNames);
             }
         }
 
@@ -125,7 +125,7 @@ namespace AssEditor
 
         private Subtitle.Subtitle current_subtitle;
 
-        void LoadSubtitles(string[] fileNames)
+        async void LoadSubtitlesAsync(string[] fileNames)
         {
             if (subtitles == null)
                 subtitles = new Queue<Subtitle.Subtitle>();
@@ -135,7 +135,8 @@ namespace AssEditor
             int AllTooLongCount = 0;
             foreach (var file in fileNames)
             {
-                var sub = Subtitle.Subtitle.LoadFromFile(file, decimal.ToUInt16(numericUpDown_wrap.Value));
+                Enum.TryParse<ZhConvert.ZhConverter.Method>(comboBox_sc2tc.SelectedItem.ToString(), out var method);
+                var sub = await Subtitle.Subtitle.LoadFromFile(file, decimal.ToUInt16(numericUpDown_wrap.Value), checkBox_sc2tc.Checked, method);
                 subtitles.Enqueue(sub);
                 AllTooLongCount += sub.DialogueTooLongCount;
             }
@@ -169,8 +170,6 @@ namespace AssEditor
                 current_subtitle.ReplaceFontName(comboBox_fontName.SelectedItem.ToString());
             if (checkBox_fontScale.Checked)
                 current_subtitle.ReplaceFontScale(decimal.ToInt32(numericUpDown_fontScale.Value));
-            if (checkBox_sc2tc.Checked)
-                MessageBox.Show("Not Implement!"); // TODO sc2tc
 
             // Start Word Wrap
             bool autoWrap = checkBox_wrap.Checked && !checkBox_manualWrap.Checked;
