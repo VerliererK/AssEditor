@@ -86,28 +86,16 @@ namespace AssEditor.Subtitle
                 d.ReplaceFontScale(scale);
         }
 
-        internal async System.Threading.Tasks.Task WordWrapAll()
+        internal async Task WordWrapAll()
         {
-            await System.Threading.Tasks.Task.WhenAll(Dialogues.Select(d =>
+            await Task.WhenAll(Dialogues.Select(d =>
              {
                  if (d.IsTextTooLong)
                      return d.WordWrapAsync(true);
                  else
-                     return System.Threading.Tasks.Task.Delay(0);
+                     return Task.Delay(0);
              }).ToArray());
         }
 
-        /*
-        public async System.Threading.Tasks.Task ToTraditional()
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (var d in Dialogues) sb.AppendLine(d.Text);
-            var allText = await ZhConvert.ZhConverter.ToTraditional(sb.ToString(), ZhConvert.ZhConverter.Method.Fanhuaji);
-            var newText = allText.Split(System.Environment.NewLine.ToCharArray(), System.StringSplitOptions.RemoveEmptyEntries);
-            //if (dialogues.Count != newText.Length) throw new System.Exception("ZhConverter Error: Length not same.");
-            for (int i = 0; i < newText.Length; i++)
-                Dialogues[i].Text = newText[i];
-        }
-        */
     }
 }

@@ -130,16 +130,21 @@ namespace AssEditor
             if (subtitles == null)
                 subtitles = new Queue<Subtitle.Subtitle>();
             subtitles.Clear();
+            LoadingMask(true);
 
             Array.Sort(fileNames);
             int AllTooLongCount = 0;
+            float progress = 0.0f;
             foreach (var file in fileNames)
             {
                 Enum.TryParse<ZhConvert.ZhConverter.Method>(comboBox_sc2tc.SelectedItem.ToString(), out var method);
                 var sub = await Subtitle.Subtitle.LoadFromFile(file, decimal.ToUInt16(numericUpDown_wrap.Value), checkBox_sc2tc.Checked, method);
                 subtitles.Enqueue(sub);
                 AllTooLongCount += sub.DialogueTooLongCount;
+                progress += 100.0f / fileNames.Length;
+                progressBar1.Value = (int)progress;
             }
+            progressBar1.Value = 100;
             if (checkBox_manualWrap.Checked && checkBox_wrap.Checked)
             {
                 var result = MessageBox.Show("總共有 " + AllTooLongCount + " 句需要斷行。\r\n繼續手動斷行？", "", MessageBoxButtons.OKCancel);
@@ -147,10 +152,12 @@ namespace AssEditor
                 {
                     subtitles.Clear();
                     Reset();
+                    LoadingMask(false);
                     return;
                 }
             }
 
+            LoadingMask(false);
             EditSubtitlesAsync();
         }
 
@@ -178,11 +185,15 @@ namespace AssEditor
 
             if (autoWrap)
             {
+                LoadingMask(true, true);
                 await current_subtitle.WordWrapAll();
+                LoadingMask(false);
             }
             else if (manualWrap && toLongCount > 0)
             {
+                LoadingMask(true, true);
                 await current_subtitle.WordWrapAll();
+                LoadingMask(false);
                 foreach (var d in current_subtitle.Dialogues)
                 {
                     if (d.IsTextTooLong)
@@ -266,6 +277,26 @@ namespace AssEditor
             while (panel.Controls.Count > 0)
                 panel.Controls[0].Dispose();
             panel.Controls.Clear();
+        }
+
+        private void LoadingMask(bool isLoading, bool isMarquee = false)
+        {
+            if (isLoading)
+            {
+                AllowDrop = false;
+                tableLayoutPanel1.Enabled = false;
+                btn_openFiles.Enabled = false;
+                progressBar1.Visible = true;
+                progressBar1.Value = isMarquee ? 20 : 0;
+                progressBar1.Style = isMarquee ? ProgressBarStyle.Marquee : ProgressBarStyle.Blocks;
+            }
+            else
+            {
+                AllowDrop = true;
+                tableLayoutPanel1.Enabled = true;
+                btn_openFiles.Enabled = true;
+                progressBar1.Visible = false;
+            }
         }
     }
 }

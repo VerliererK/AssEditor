@@ -43,6 +43,7 @@
             this.panel_editor = new System.Windows.Forms.Panel();
             this.btn_renameForm = new System.Windows.Forms.Button();
             this.btn_openFiles = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_wrap)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_fontScale)).BeginInit();
@@ -259,12 +260,22 @@
             this.btn_openFiles.UseVisualStyleBackColor = false;
             this.btn_openFiles.Click += new System.EventHandler(this.btn_openFiles_Click);
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(141, 400);
+            this.progressBar1.MarqueeAnimationSpeed = 10;
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(345, 45);
+            this.progressBar1.TabIndex = 0;
+            this.progressBar1.Visible = false;
+            // 
             // Form1
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(782, 670);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.btn_renameForm);
             this.Controls.Add(this.panel_editor);
             this.Controls.Add(this.btn_openFiles);
@@ -301,6 +312,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDown_fontScale;
         private System.Windows.Forms.Panel panel_editor;
         private System.Windows.Forms.Button btn_renameForm;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 
