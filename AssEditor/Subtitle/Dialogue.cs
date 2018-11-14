@@ -83,26 +83,31 @@ namespace AssEditor.Subtitle
         {
             int midIndex = text.Length / 2;
             int index = 0;
-            List<Segment> seg = await Segmentor.SegmentTextAsync(text);
-            int segIndex = 0;
-            if (seg != null)
-                foreach (var s in seg)
-                {
-                    segIndex += s.Word.Length;
-                    if (Segmentor.IsNoun(s.POS) && System.Math.Abs(segIndex - midIndex) < System.Math.Abs(index - midIndex))
-                        index = segIndex - 1;
-                }
 
             int padding = 3;
             char c;
+
+            for (int i = padding; i < text.Length - padding; i++)
+            {
+                c = text[i];
+                if (char.IsPunctuation(c) || IsLetterOrDigit(c) || char.IsWhiteSpace(c))
+                    if (System.Math.Abs(i - midIndex) < System.Math.Abs(index - midIndex))
+                        index = i;
+            }
+
             if (index == 0)
-                for (int i = padding; i < text.Length - padding; i++)
-                {
-                    c = text[i];
-                    if (char.IsPunctuation(c) || IsLetterOrDigit(c) || char.IsWhiteSpace(c))
-                        if (System.Math.Abs(i - midIndex) < System.Math.Abs(index - midIndex))
-                            index = i;
-                }
+            {
+                List<Segment> seg = await Segmentor.SegmentTextAsync(text);
+                int segIndex = 0;
+                if (seg != null)
+                    foreach (var s in seg)
+                    {
+                        segIndex += s.Word.Length;
+                        if (Segmentor.IsNoun(s.POS) && System.Math.Abs(segIndex - midIndex) < System.Math.Abs(index - midIndex))
+                            index = segIndex - 1;
+                    }
+            }
+
             // fine tune
             if (index > 0)
             {
