@@ -125,6 +125,15 @@ namespace AssEditor.Subtitle
                         index--;  //insert front
                     }
                 }
+                else if (char.IsPunctuation(c))  // find end of punctuation
+                {
+                    while (index < text.Length - 1 && char.IsPunctuation(text[index + 1]))
+                        index++;
+                    if (index > text.Length - padding)
+                    {
+                        index = 0;
+                    }
+                }
             }
             // not found
             if (index <= 0 || index >= text.Length - 1) index = midIndex - 1;
