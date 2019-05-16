@@ -79,6 +79,7 @@
     <Compile Include="Subtitle\Segmentor.cs" />
     <Compile Include="Subtitle\Subtitle.cs" />
     <Compile Include="Subtitle\Style.cs" />
+    <Compile Include="Subtitle\SubtitleRenderer.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
