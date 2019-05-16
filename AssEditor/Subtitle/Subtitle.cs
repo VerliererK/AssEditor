@@ -10,12 +10,16 @@ namespace AssEditor.Subtitle
     {
         private Encoding encoding = Encoding.UTF8;
         public string FileName { get; private set; }
+
+        public int PlayResX = 0;
+        public int PlayResY = 0;
+
         public List<Style> Styles { get; private set; }
         public List<Dialogue> Dialogues { get; private set; }
         private List<object> AllLines;
         public int DialogueTooLongCount { get { return Dialogues.Where(d => d.IsTextTooLong).Count(); } }
 
-        public static async Task<Subtitle> LoadFromFile(string fileName, ushort wrapLimit = 20, bool ToTraditional = false, ZhConvert.ZhConverter.Method method = ZhConvert.ZhConverter.Method.Fanhuaji)
+        public static async Task<Subtitle> LoadFromFile(string fileName, ushort wrapLimit = 20, bool ToTraditional = false, ZhConvert.ZhConverter.Method method = ZhConvert.ZhConverter.Method.Fanhuaji, System.Text.RegularExpressions.Regex ignoreStyles = null)
         {
             if (!File.Exists(fileName)) return null;
             Subtitle subtitle = new Subtitle();
@@ -27,7 +31,7 @@ namespace AssEditor.Subtitle
             using (var sr = new StringReader(allText))
                 while ((line = sr.ReadLine()) != null)
                 {
-                    var d = Dialogue.Parse(line, wrapLimit);
+                    var d = Dialogue.Parse(line, wrapLimit, ignoreStyles);
                     var s = Style.Parse(line);
 
                     if (d != null)
@@ -41,7 +45,19 @@ namespace AssEditor.Subtitle
                         subtitle.Styles.Add(s);
                     }
                     else
+                    {
+                        if (line.StartsWith("PlayResX"))
+                        {
+                            int.TryParse(line.Substring("PlayResX".Length + 1).Trim(), out int playResX);
+                            subtitle.PlayResX = playResX;
+                        }
+                        else if (line.StartsWith("PlayResY"))
+                        {
+                            int.TryParse(line.Substring("PlayResY".Length + 1).Trim(), out int playResY);
+                            subtitle.PlayResY = playResY;
+                        }
                         subtitle.AllLines.Add(line);
+                    }
                 }
             return subtitle;
         }

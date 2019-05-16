@@ -71,29 +71,38 @@ namespace AssEditor.Subtitle
 
     public class Segmentor
     {
-        private static readonly string api_server = "http://120.127.233.228/Segmentor/Func/getSegResult/";
+        private static readonly string api_server = "https://120.127.233.228/Segmentor/Func/getSegResult/";
         private static readonly HttpClient client = new HttpClient();
         private static readonly Regex regex_result = new Regex("\\[\\\"(.*?)\",\\\"(.*?)\"\\]");
 
         public static async Task<List<Segment>> SegmentTextAsync(string text)
         {
-            var content = new StringContent("{\"RawText\":\"" + text + "\"}", System.Text.Encoding.UTF8, "application/json");
-            using (var response = await client.PostAsync(api_server, content))
+            try
             {
-                var responseString = await response.Content.ReadAsStringAsync();
-                if (!response.IsSuccessStatusCode) return null;
-                var matches = regex_result.Matches(Regex.Unescape(responseString).Replace(" ", "").Replace("\n", ""));
-                List<Segment> results = new List<Segment>();
-                foreach (Match m in matches)
+                System.Net.ServicePointManager.ServerCertificateValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
+
+                var content = new StringContent("{\"RawText\":\"" + text + "\"}", System.Text.Encoding.UTF8, "application/json");
+                using (var response = await client.PostAsync(api_server, content))
                 {
-                    if (m.Groups.Count != 3) continue;
-                    string word = m.Groups[1].Value;
-                    string pos = m.Groups[2].Value;
-                    PartOfSpeech POS = PartOfSpeech.Unknown;
-                    System.Enum.TryParse(pos, out POS);
-                    results.Add(new Segment(word, POS));
+                    var responseString = await response.Content.ReadAsStringAsync();
+                    if (!response.IsSuccessStatusCode) return null;
+                    var matches = regex_result.Matches(Regex.Unescape(responseString).Replace(" ", "").Replace("\n", ""));
+                    List<Segment> results = new List<Segment>();
+                    foreach (Match m in matches)
+                    {
+                        if (m.Groups.Count != 3) continue;
+                        string word = m.Groups[1].Value;
+                        string pos = m.Groups[2].Value;
+                        PartOfSpeech POS = PartOfSpeech.Unknown;
+                        System.Enum.TryParse(pos, out POS);
+                        results.Add(new Segment(word, POS));
+                    }
+                    return results;
                 }
-                return results;
+            }
+            catch
+            {
+                return null;
             }
         }
 

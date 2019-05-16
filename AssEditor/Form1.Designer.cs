@@ -44,6 +44,8 @@
             this.btn_renameForm = new System.Windows.Forms.Button();
             this.btn_openFiles = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.checkBox_ignoreStyle = new System.Windows.Forms.CheckBox();
+            this.richTextBox_ignoreStyle = new System.Windows.Forms.RichTextBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_wrap)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_fontScale)).BeginInit();
@@ -55,6 +57,7 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.Controls.Add(this.checkBox_ignoreStyle, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.numericUpDown_wrap, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.checkBox_coverFile, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.checkBox_fontName, 0, 0);
@@ -65,16 +68,18 @@
             this.tableLayoutPanel1.Controls.Add(this.comboBox_fontName, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.comboBox_sc2tc, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.numericUpDown_fontScale, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.richTextBox_ignoreStyle, 1, 5);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(141, 13);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowCount = 6;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(345, 240);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(345, 287);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // numericUpDown_wrap
@@ -224,10 +229,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel_editor.AutoScroll = true;
             this.panel_editor.BackColor = System.Drawing.SystemColors.Control;
-            this.panel_editor.Location = new System.Drawing.Point(0, 260);
+            this.panel_editor.Location = new System.Drawing.Point(0, 307);
             this.panel_editor.Name = "panel_editor";
             this.panel_editor.Padding = new System.Windows.Forms.Padding(10);
-            this.panel_editor.Size = new System.Drawing.Size(782, 398);
+            this.panel_editor.Size = new System.Drawing.Size(782, 351);
             this.panel_editor.TabIndex = 4;
             // 
             // btn_renameForm
@@ -268,6 +273,28 @@
             this.progressBar1.Size = new System.Drawing.Size(345, 45);
             this.progressBar1.TabIndex = 0;
             this.progressBar1.Visible = false;
+            // 
+            // checkBox_ignoreStyle
+            // 
+            this.checkBox_ignoreStyle.AutoSize = true;
+            this.checkBox_ignoreStyle.Location = new System.Drawing.Point(4, 244);
+            this.checkBox_ignoreStyle.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox_ignoreStyle.Name = "checkBox_ignoreStyle";
+            this.checkBox_ignoreStyle.Padding = new System.Windows.Forms.Padding(10, 0, 10, 5);
+            this.checkBox_ignoreStyle.Size = new System.Drawing.Size(151, 39);
+            this.checkBox_ignoreStyle.TabIndex = 10;
+            this.checkBox_ignoreStyle.Text = "忽略樣式";
+            this.checkBox_ignoreStyle.UseVisualStyleBackColor = true;
+            this.checkBox_ignoreStyle.CheckedChanged += new System.EventHandler(this.CheckBox_ignoreStyle_CheckedChanged);
+            // 
+            // richTextBox_ignoreStyle
+            // 
+            this.richTextBox_ignoreStyle.Location = new System.Drawing.Point(162, 243);
+            this.richTextBox_ignoreStyle.Multiline = false;
+            this.richTextBox_ignoreStyle.Name = "richTextBox_ignoreStyle";
+            this.richTextBox_ignoreStyle.Size = new System.Drawing.Size(180, 40);
+            this.richTextBox_ignoreStyle.TabIndex = 11;
+            this.richTextBox_ignoreStyle.Text = "";
             // 
             // Form1
             // 
@@ -313,6 +340,8 @@
         private System.Windows.Forms.Panel panel_editor;
         private System.Windows.Forms.Button btn_renameForm;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.CheckBox checkBox_ignoreStyle;
+        private System.Windows.Forms.RichTextBox richTextBox_ignoreStyle;
     }
 }
 

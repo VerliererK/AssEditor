@@ -29,7 +29,7 @@ namespace AssEditor.Subtitle
         public static readonly Regex regex_effect = new Regex(@"{[^{]*\}");
         public static readonly string[] wrapchar = new string[] { " ", "\\n", "\\N" };
 
-        public static Dialogue Parse(string line, ushort wrapLimit = 20, bool splitTextEffect = true)
+        public static Dialogue Parse(string line, ushort wrapLimit = 20, Regex ignoreStyles = null)
         {
             if (!line.StartsWith("Dialogue: ")) return null;
             string[] Format = line.Substring("Dialogue: ".Length).Split(new char[] { ',' }, 10);
@@ -44,7 +44,8 @@ namespace AssEditor.Subtitle
                 name: Format[4],
                 marginL: Format[5], marginR: Format[6], marginV: Format[7],
                 effect: Format[8],
-                wrapLimit: wrapLimit);
+                wrapLimit: wrapLimit,
+                ignoreStyles: ignoreStyles);
 
             return dialogue;
         }
@@ -141,7 +142,7 @@ namespace AssEditor.Subtitle
             return index;
         }
 
-        Dialogue(string text, string layer, string start, string end, string style, string name, string marginL, string marginR, string marginV, string effect, ushort wrapLimit)
+        Dialogue(string text, string layer, string start, string end, string style, string name, string marginL, string marginR, string marginV, string effect, ushort wrapLimit, Regex ignoreStyles)
         {
             TextEffects.Clear();
             int prevEffectLength = 0;
@@ -163,7 +164,10 @@ namespace AssEditor.Subtitle
             MarginV = marginV;
             Effect = effect;
             WrapLimit = wrapLimit;
-            IsTextTooLong = IsTooLong(OriginalText, wrapLimit);
+            if (ignoreStyles != null && ignoreStyles.IsMatch(Style))
+                IsTextTooLong = false;
+            else
+                IsTextTooLong = IsTooLong(OriginalText, wrapLimit);
         }
 
         ~Dialogue()

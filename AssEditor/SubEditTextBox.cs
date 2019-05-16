@@ -14,6 +14,24 @@ namespace AssEditor
             Text = d.Text;
             Disposed += SubEditTextBox_Disposed;
             ColorizedText();
+
+            richTextBox1.MouseWheel += RichTextBox1_MouseWheel;
+        }
+
+        private void RichTextBox1_MouseWheel(object sender, MouseEventArgs e)
+        {
+            var panel = Parent as Panel;
+            if (panel != null)
+            {
+                int delta = SystemInformation.MouseWheelScrollLines * e.Delta;
+
+                if (panel.VerticalScroll.Value - delta < panel.VerticalScroll.Minimum)
+                    panel.VerticalScroll.Value = panel.VerticalScroll.Minimum;
+                else if (panel.VerticalScroll.Value - delta > panel.VerticalScroll.Maximum)
+                    panel.VerticalScroll.Value = panel.VerticalScroll.Maximum;
+                else
+                    panel.VerticalScroll.Value -= delta;
+            }
         }
 
         private void SubEditTextBox_Disposed(object sender, EventArgs e)

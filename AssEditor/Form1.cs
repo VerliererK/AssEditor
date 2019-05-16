@@ -79,6 +79,11 @@ namespace AssEditor
             checkBox_coverFile.Checked = result == DialogResult.Yes;
         }
 
+        private void CheckBox_ignoreStyle_CheckedChanged(object sender, EventArgs e)
+        {
+            richTextBox_ignoreStyle.Enabled = checkBox_ignoreStyle.Checked;
+        }
+
         private void Form1_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -132,13 +137,17 @@ namespace AssEditor
             subtitles.Clear();
             LoadingMask(true);
 
+            System.Text.RegularExpressions.Regex ignoreStyles = null;
+            if (checkBox_ignoreStyle.Checked && !string.IsNullOrEmpty(richTextBox_ignoreStyle.Text))
+                ignoreStyles = new System.Text.RegularExpressions.Regex(richTextBox_ignoreStyle.Text, System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+
             Array.Sort(fileNames);
             int AllTooLongCount = 0;
             float progress = 0.0f;
             foreach (var file in fileNames)
             {
                 Enum.TryParse<ZhConvert.ZhConverter.Method>(comboBox_sc2tc.SelectedItem.ToString(), out var method);
-                var sub = await Subtitle.Subtitle.LoadFromFile(file, decimal.ToUInt16(numericUpDown_wrap.Value), checkBox_sc2tc.Checked, method);
+                var sub = await Subtitle.Subtitle.LoadFromFile(file, decimal.ToUInt16(numericUpDown_wrap.Value), checkBox_sc2tc.Checked, method, ignoreStyles);
                 subtitles.Enqueue(sub);
                 AllTooLongCount += sub.DialogueTooLongCount;
                 progress += 100.0f / fileNames.Length;
